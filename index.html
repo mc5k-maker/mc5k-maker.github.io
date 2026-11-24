@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لعبة التخمين 🎮</title>
+<style>
+  body { font-family: sans-serif; background: #1a1a2e; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 20px; box-sizing: border-box; }
+  h1 { font-size: 1.5rem; }
+  #msg { font-size: 1.2rem; min-height: 2rem; margin: 16px 0; text-align: center; }
+  input { font-size: 1.2rem; padding: 10px; width: 140px; text-align: center; border-radius: 10px; border: none; }
+  button { font-size: 1.2rem; padding: 10px 24px; margin: 8px; border: none; border-radius: 10px; background: #e94560; color: #fff; cursor: pointer; }
+  #tries { opacity: 0.8; }
+</style>
+</head>
+<body>
+<h1>🎮 خمن الرقم</h1>
+<p>اختار رقم من 1 لـ 100 وعندك 7 محاولات</p>
+<div id="msg">يلا بينا!</div>
+<input id="guess" type="number" min="1" max="100" placeholder="؟">
+<button onclick="check()">خمن</button>
+<div id="tries">المحاولات الباقية: 7</div>
+<button onclick="restart()" style="background:#0f3460">لعبة جديدة</button>
+<script>
+let number, tries, finished;
+function restart() {
+  number = Math.floor(Math.random() * 100) + 1;
+  tries = 7;
+  finished = false;
+  document.getElementById('msg').textContent = 'يلا بينا!';
+  document.getElementById('tries').textContent = 'المحاولات الباقية: ' + tries;
+  document.getElementById('guess').value = '';
+}
+function check() {
+  if (finished) return;
+  const g = Number(document.getElementById('guess').value);
+  if (!Number.isInteger(g) || g < 1 || g > 100) {
+    document.getElementById('msg').textContent = 'اكتب رقم صحيح من 1 لـ 100';
+    return;
+  }
+  tries--;
+  if (g === number) {
+    finished = true;
+    document.getElementById('msg').textContent = 'برافو! خمنتها صح 🎉';
+  } else if (tries === 0) {
+    finished = true;
+    document.getElementById('msg').textContent = 'خسرت 😅 الرقم كان ' + number;
+  } else {
+    document.getElementById('msg').textContent = g < number ? 'أعلى من كده ⬆️' : 'أقل من كده ⬇️';
+  }
+  document.getElementById('tries').textContent = 'المحاولات الباقية: ' + Math.max(tries, 0);
+}
+restart();
+</script>
+</body>
+</html>
